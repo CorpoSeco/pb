@@ -1,0 +1,34 @@
+From b27f7fdeac0ade44cd46092bd75765804ade087a Mon Sep 17 00:00:00 2001
+From: name29 <us1er@gmail.com>
+Date: Sun, 26 Feb 2023 17:41:14 +0100
+Subject: [PATCH 3/5] Revert Switch long-press power behavior in AOSP
+
+---
+ core/res/res/values/config.xml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/core/res/res/values/config.xml b/core/res/res/values/config.xml
+index 2f8ea8a9..869ae777 100644
+--- a/core/res/res/values/config.xml
++++ b/core/res/res/values/config.xml
+@@ -1013,7 +1013,7 @@
+             5 - Go to assistant (Settings.Secure.ASSISTANT)
+             6 - Toggle torch on / off (if screen is off)
+     -->
+-    <integer name="config_longPressOnPowerBehavior">5</integer>
++    <integer name="config_longPressOnPowerBehavior">1</integer>
+ 
+     <!-- The time in milliseconds after which a press on power button is considered "long". -->
+     <integer name="config_longPressOnPowerDurationMs">500</integer>
+@@ -1045,7 +1045,7 @@
+             1 - Mute toggle
+             2 - Global actions menu
+     -->
+-    <integer name="config_keyChordPowerVolumeUp">2</integer>
++    <integer name="config_keyChordPowerVolumeUp">1</integer>
+ 
+     <!-- Allows activities to be launched on a long press on power during device setup. -->
+     <bool name="config_allowStartActivityForLongPressOnPowerInSetup">false</bool>
+-- 
+2.34.1
+

@@ -1,0 +1,49 @@
+From 2bf6172439d7cc496b488700436a679cb9c7537c Mon Sep 17 00:00:00 2001
+From: name29 <us1er@gmail.com>
+Date: Sun, 26 Feb 2023 17:36:57 +0100
+Subject: [PATCH 2/5] Automatically detect pick up sensor, so that an overlay
+
+---
+ .../display/AmbientDisplayConfiguration.java  | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
+
+diff --git a/core/java/android/hardware/display/AmbientDisplayConfiguration.java b/core/java/android/hardware/display/AmbientDisplayConfiguration.java
+index 05bcafc6..4e411abb 100644
+--- a/core/java/android/hardware/display/AmbientDisplayConfiguration.java
++++ b/core/java/android/hardware/display/AmbientDisplayConfiguration.java
+@@ -25,6 +25,9 @@ import android.text.TextUtils;
+ import android.util.ArrayMap;
+ import android.util.SparseArray;
+ 
++import android.hardware.SensorManager;
++import android.hardware.Sensor;
++
+ import com.android.internal.R;
+ import com.android.internal.util.ArrayUtils;
+ 
+@@ -120,8 +123,20 @@ public class AmbientDisplayConfiguration {
+ 
+     /** @hide */
+     public boolean dozePickupSensorAvailable() {
+-        return mContext.getResources().getBoolean(R.bool.config_dozePulsePickup);
+-    }
++        SensorManager sm = mContext.getSystemService(SensorManager.class);
++        boolean found = false;
++        if(sm == null) {
++            android.util.Log.d("PHH", "Failed getting sensor manager, can't detect pickup sensor");
++        } else {
++            java.util.List<Sensor> sensors = sm.getSensorList(Sensor.TYPE_ALL);
++            for(Sensor s : sensors) {
++                if(Sensor.STRING_TYPE_PICK_UP_GESTURE.equals(s.getStringType())) {
++                    found = true;
++                    break;
++                }
++            }
++        }
++        return mContext.getResources().getBoolean(R.bool.config_dozePulsePickup) || found;    }
+ 
+     /** {@hide} */
+     public boolean tiltGestureEnabled(int user) {
+-- 
+2.34.1
+
